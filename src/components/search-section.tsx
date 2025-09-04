@@ -31,7 +31,7 @@ export function SearchSection() {
         .select('*')
         .ilike('name', `%${searchQuery.trim()}%`)
         .limit(1)
-        .single()
+        .maybeSingle()
       
       if (recitersData && !recitersError) {
         setResult({
@@ -49,7 +49,7 @@ export function SearchSection() {
         .select('*')
         .ilike('name', `%${searchQuery.trim()}%`)
         .limit(1)
-        .single()
+        .maybeSingle()
       
       if (resultsData && !resultsError) {
         setResult({

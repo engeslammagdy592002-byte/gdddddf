@@ -5,18 +5,23 @@ import { Button } from "@/components/ui/button"
 
 const SearchInput = React.forwardRef<
   HTMLInputElement,
-  React.ComponentProps<"input"> & {
+  Omit<React.ComponentProps<"input">, 'onChange'> & {
     onSearch?: (value: string) => void
     onButtonClick?: () => void
     isLoading?: boolean
   }
->(({ className, onSearch, onButtonClick, isLoading = false, ...props }, ref) => {
-  const [value, setValue] = React.useState("")
+>(({ className, onSearch, onButtonClick, isLoading = false, value: externalValue, ...props }, ref) => {
+  const [value, setValue] = React.useState(externalValue || "")
+
+  React.useEffect(() => {
+    if (externalValue !== undefined) {
+      setValue(String(externalValue))
+    }
+  }, [externalValue])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value
     setValue(newValue)
-    // Don't auto-search, wait for button click
   }
 
   const handleButtonClick = () => {
